@@ -8,12 +8,24 @@ KTJJT 220
 QQQJA 483
 """
 
-card_values = {v: i for i, v in enumerate(('2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'))}
+cards = ('2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A')
+card_values = {v: i for i, v in enumerate(cards, start=1)}
 
-def get_hand_type(hand):
+def get_card_value(card, j):
+    if card == 'J' and j:
+        return 0
+    return card_values[card]
+
+def get_hand_type(hand, j):
     value_counts = defaultdict(int)
     for card in hand:
         value_counts[card] += 1
+    if j:
+        if hand == 'JJJJJ':
+            return 6
+        max_value = max((v for v in value_counts.items() if v[0] != 'J'), key=lambda v: v[1])
+        value_counts[max_value[0]] += value_counts['J']
+        del value_counts['J']
     max_count = max(value_counts.values())
     if max_count == 5:
         return 6  # five of a kind
@@ -29,17 +41,17 @@ def get_hand_type(hand):
         return 1  # one pair
     return 0  # high card
 
-def compare(hand):
-    return (get_hand_type(hand) * 100 ** 5
-            + card_values[hand[0]] * 100 ** 4
-            + card_values[hand[1]] * 100 ** 3
-            + card_values[hand[2]] * 100 ** 2
-            + card_values[hand[3]] * 100
-            + card_values[hand[4]])
+def compare(hand, j=False):
+    return (get_hand_type(hand, j) * 100 ** 5
+            + get_card_value(hand[0], j) * 100 ** 4
+            + get_card_value(hand[1], j) * 100 ** 3
+            + get_card_value(hand[2], j) * 100 ** 2
+            + get_card_value(hand[3], j) * 100
+            + get_card_value(hand[4], j))
 
-def f1(data, debug):
+def f(data, part, debug):  # 251927063
     hands_and_bids = [line.split() for line in data]
-    hands_and_bids.sort(key=lambda v: compare(v[0]))
+    hands_and_bids.sort(key=lambda v: compare(v[0], part == 2))
     winnings = 0
     for rank, (hand, bid) in enumerate(hands_and_bids, start=1):
         winnings += rank * int(bid)
