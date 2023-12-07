@@ -49,7 +49,7 @@ def compare(hand, j=False):
             + get_card_value(hand[3], j) * 100
             + get_card_value(hand[4], j))
 
-def f(data, part, debug):  # 251927063
+def f(data, part, debug):
     hands_and_bids = [line.split() for line in data]
     hands_and_bids.sort(key=lambda v: compare(v[0], part == 2))
     winnings = 0
