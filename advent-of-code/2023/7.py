@@ -36,7 +36,7 @@ def get_hand_type(hand, j):
             return 4  # full house
         return 3  # three of a kind
     if max_count == 2:
-        if list(value_counts.values()).count(2) == 2:
+        if len(value_counts) == 3:
             return 2  # two pair
         return 1  # one pair
     return 0  # high card
