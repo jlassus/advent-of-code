@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 test = """
 32T3K 765
 T55J5 684
@@ -17,15 +15,15 @@ def get_card_value(card, j):
     return card_values[card]
 
 def get_hand_type(hand, j):
-    value_counts = defaultdict(int)
+    value_counts = {}
     for card in hand:
-        value_counts[card] += 1
-    if j:
-        if hand == 'JJJJJ':
+        value_counts[card] = value_counts.get(card, 0) + 1
+    if j and (j_count := value_counts.get('J', 0)):
+        if j_count == 5:
             return 6
-        max_value = max((v for v in value_counts.items() if v[0] != 'J'), key=lambda v: v[1])
-        value_counts[max_value[0]] += value_counts['J']
         del value_counts['J']
+        max_value = max(value_counts.items(), key=lambda v: v[1])
+        value_counts[max_value[0]] += j_count
     max_count = max(value_counts.values())
     if max_count == 5:
         return 6  # five of a kind
@@ -41,17 +39,13 @@ def get_hand_type(hand, j):
         return 1  # one pair
     return 0  # high card
 
-def compare(hand, j=False):
-    return (get_hand_type(hand, j) * 100 ** 5
-            + get_card_value(hand[0], j) * 100 ** 4
-            + get_card_value(hand[1], j) * 100 ** 3
-            + get_card_value(hand[2], j) * 100 ** 2
-            + get_card_value(hand[3], j) * 100
-            + get_card_value(hand[4], j))
+def compare_key(hand, j=False):
+    return (sum(get_card_value(c, j) << (i << 2) for i, c in enumerate(reversed(hand)))
+            + (get_hand_type(hand, j) << 20))
 
 def f(data, part, debug):
     hands_and_bids = [line.split() for line in data]
-    hands_and_bids.sort(key=lambda v: compare(v[0], part == 2))
+    hands_and_bids.sort(key=lambda v: compare_key(v[0], part == 2))
     winnings = 0
     for rank, (hand, bid) in enumerate(hands_and_bids, start=1):
         winnings += rank * int(bid)
