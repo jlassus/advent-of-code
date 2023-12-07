@@ -13,7 +13,6 @@ test = """
 
 def f1(data, debug):
     valid_numbers = []
-    invalid_numbers = []
     previous_numbers = []
     previous_symbols = []
     for line in data:
@@ -39,15 +38,11 @@ def f1(data, debug):
         for n in previous_numbers:
             if n[3]:
                 valid_numbers.append(n)
-            else:
-                invalid_numbers.append(n)
         previous_numbers = numbers
         previous_symbols = symbols
     for n in previous_numbers:
         if n[3]:
             valid_numbers.append(n)
-        else:
-            invalid_numbers.append(n)
     if debug:
         print('\n'.join(str(v[0]) for v in valid_numbers))
     return sum(v[0] for v in valid_numbers)
