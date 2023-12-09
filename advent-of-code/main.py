@@ -32,7 +32,7 @@ def get_module_test_data(module, part=None):
         data = getattr(module, 'test', None)
     if not data:
         data = getattr(module, 'test1', None)
-    return data
+    return data or ''
 
 def measure_performance(f):
     def measure(**kwargs):
