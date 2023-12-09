@@ -115,7 +115,7 @@ def main():
                 print('  %s' % input_path)
                 sys.exit(1)
     if data:
-        data = data.strip().split('\n')
+        data = data.replace('\r', '').strip('\n').split('\n')
     kwargs['data'] = data
     print('%sing %s day %s %s(%s) with %d lines of data...' % ('Test' if args.test else 'Runn', year, args.day,
                                                                func.__name__, kwargs.get('part', ''), len(data)))
