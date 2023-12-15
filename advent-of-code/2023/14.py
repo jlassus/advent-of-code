@@ -87,7 +87,7 @@ def f(data, part, debug):
                 break
     load = 0
     for row_i, row in enumerate(data):
-        load += row.count('O') * (len(data) - row_i)
+        load += row.count('O') * (h - row_i)
     if debug:
         for row in data:
             print(''.join(row))
