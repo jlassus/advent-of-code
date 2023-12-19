@@ -100,7 +100,7 @@ def f1(data, debug):
 def f2(data, debug):
     workflows = get_workflows(data)
     cubes = set()
-    var_index = {'x': 0, 'm': 1, 'a': 2, 's': 3}
+    var_index = {c: i for i, c in enumerate('xmas')}
 
     def get_cubes(wf_id, cube):
         if wf_id == 'A':
