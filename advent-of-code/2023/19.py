@@ -133,18 +133,15 @@ def f2(data, debug):
     get_cubes('in', Cube((1, 1, 1, 1), (4000, 4000, 4000, 4000)))
     volume = 0
     i = 1
-    while True:
+    stop = False
+    while not stop:
         stop = True
         for c in itertools.combinations(cubes, i):
             overlap = functools.reduce(operator.and_, c)
-            v = overlap.volume
-            if v:
+            if v := overlap.volume:
+                if not i & 1:
+                    v = -v
+                volume += v
                 stop = False
-                if i & 1:
-                    volume += v
-                else:
-                    volume -= v
         i += 1
-        if stop:
-            break
     return volume
