@@ -87,10 +87,7 @@ def f1(data, debug):
         wf = 'in'
         while wf not in ('A', 'R'):
             for r in workflows[wf]:
-                if r[0] is None:
-                    wf = r[3]
-                    break
-                if comparisons[r[1]](p[r[0]], r[2]):
+                if r[0] is None or comparisons[r[1]](p[r[0]], r[2]):
                     wf = r[3]
                     break
         if wf == 'A':
