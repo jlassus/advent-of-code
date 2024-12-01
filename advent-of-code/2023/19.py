@@ -38,7 +38,7 @@ class Cube:
         return functools.reduce(operator.mul, self.size)
 
     def __repr__(self):
-        return 'Cube(pos=%s, size=%s)' % (repr(self.pos), repr(self.size))
+        return 'Cube(pos=%r, size=%r)' % (self.pos, self.size)
 
     def __hash__(self):
         return self.hash
