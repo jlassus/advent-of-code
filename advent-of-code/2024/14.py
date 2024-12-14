@@ -38,7 +38,7 @@ def variance(distr):
 
 
 def visualize(grid):
-        print('\n'.join(''.join('X' if n else ' ' for n in line) for line in grid))
+    print('\n'.join(''.join('X' if n else ' ' for n in line) for line in grid))
 
 
 def f1(data, debug):
