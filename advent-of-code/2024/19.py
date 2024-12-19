@@ -1,4 +1,3 @@
-import collections
 import functools
 
 test = """
@@ -13,14 +12,6 @@ bwurrg
 brgr
 bbrgwb
 """
-
-
-def get_relevant_towels(towels, pattern):
-    towels_filtered = collections.defaultdict(list)
-    for t in towels:
-        if t in pattern:
-            towels_filtered[t[0]].append(t)
-    return towels_filtered
 
 
 def has_solution(pattern, towels):
