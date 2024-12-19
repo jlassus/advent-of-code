@@ -26,10 +26,7 @@ def get_relevant_towels(towels, pattern):
 def has_solution(pattern, towels):
     if not pattern:
         return True
-    filtered_towels = get_relevant_towels(towels, pattern)
-    if pattern[0] not in filtered_towels:
-        return False
-    for t in filtered_towels[pattern[0]]:
+    for t in towels:
         if pattern.startswith(t) and has_solution(pattern[len(t):], towels):
             return True
     return False
@@ -39,11 +36,8 @@ def has_solution(pattern, towels):
 def count_solutions(pattern, towels):
     if not pattern:
         return 1
-    filtered_towels = get_relevant_towels(towels, pattern)
-    if pattern[0] not in filtered_towels:
-        return 0
     c = 0
-    for t in filtered_towels[pattern[0]]:
+    for t in towels:
         if pattern.startswith(t):
             c += count_solutions(pattern[len(t):], towels)
     return c
