@@ -1,3 +1,5 @@
+import collections
+
 test1 = """
 1
 10
@@ -40,30 +42,21 @@ def f1(data, debug):
 
 
 def f2(data, debug):
-    monkeys = []
+    sequences = collections.Counter()
+    differences = collections.deque(maxlen=4)
+    seen = set()
     for number in data:
         secret = int(number)
-        p = secret % 10
-        prices = [p]
-        monkeys.append(prices)
+        p0 = secret % 10
         for _ in range(2000):
             secret = get_next_secret(secret)
             p1 = secret % 10
-            prices.append(p1 - p)
-            p = p1
-    best = (0, None)
-    try:
-        for p0 in range(-9, 10):
-            for p1 in range(-9, 10):
-                for p2 in range(-9, 10):
-                    for p3 in range(-9, 10):
-                        total = 0
-                        for prices in monkeys:
-                            total += get_sell_price(prices, p0, p1, p2, p3)
-                        if total > best[0]:
-                            best = (total, (p0, p1, p2, p3))
-                            print(f'New best: {total} ({p0}, {p1}, {p2}, {p3})')
-    except KeyboardInterrupt:
-        if best[1]:
-            print(f'Best: {best[0]} ({best[1][0]}, {best[1][1]}, {best[1][2]}, {best[1][3]})')
-    return best[0]
+            differences.append(p1 - p0)
+            seq = tuple(differences)
+            if seq not in seen and len(seq) == 4:
+                seen.add(seq)
+                sequences[seq] += p1
+            p0 = p1
+        differences.clear()
+        seen.clear()
+    return max(sequences.values())
