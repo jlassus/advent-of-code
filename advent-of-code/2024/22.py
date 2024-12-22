@@ -17,7 +17,7 @@ test2 = """
 
 def get_next_secret(s):
     s = (s ^ (s << 6)) & 16777215
-    s = (s ^ (s >> 5)) & 16777215
+    s = (s ^ (s >> 5))
     s = (s ^ (s << 11)) & 16777215
     return s
 
